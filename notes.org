@@ -1,0 +1,4 @@
+* ScrabbleDrop
+** On tap release in grid player can drop letter
+** Drag moves image
+** Letters can form words
