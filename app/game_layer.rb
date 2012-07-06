@@ -81,8 +81,15 @@ class GameLayer < CCLayer
     word = x_left.upto(x_right).collect do |pos|
       @board[[pos, y]].letter
     end.join
-    
-    return word if @dictionary.has_key? word
+
+    if @dictionary.has_key? word
+      x_left.upto(x_right).each do |pos|
+        @board[[pos, y]].sprite.removeFromParentAndCleanup(true)
+        @board[[pos, y]].label.removeFromParentAndCleanup(true)
+        @board[[pos, y]] = nil
+      end
+      return word
+    end
     false
   end
 

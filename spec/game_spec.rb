@@ -28,9 +28,10 @@ describe "Game" do
   end
 
   it "can recognize and remove words" do
-    drop_letter 0, 'c'
-    drop_letter 1, 'a'
-    drop_letter 2, 't'
+    drop_letter 9, 'c'
+    drop_letter 0, 'a'
+    drop_letter 1, 't'
+    drop_letter 2, 'z'
 
     game_layer.board[[0, 0]].should == nil
   end
