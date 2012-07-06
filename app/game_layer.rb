@@ -14,6 +14,11 @@ class GameLayer < CCLayer
     super
     @frame_tick = 0
 
+    @dictionary = {}
+    File.new("#{NSBundle.mainBundle.resourcePath}/#{dict_file}").each do |word|
+      @dictionary[word.chomp] = true
+    end
+
     CCSpriteFrameCache.sharedSpriteFrameCache.addSpriteFramesWithFile("game_sprites.plist")
     @batch_node = CCSpriteBatchNode.batchNodeWithFile("game_sprites.png")
     addChild(@batch_node)
@@ -66,18 +71,21 @@ class GameLayer < CCLayer
     @board[[x, first_unused_spot]] = @current_letter
     @current_letter.position = CGPoint.new(x_pos(x), first_unused_spot * region_size + 20)
 
-    check_for_words x, first_unused_spot
+    check_for_words(x, first_unused_spot)
   end
 
   def check_for_words x, y
     x_left = find_letter_farthest_to_left x, y
     x_right = find_letter_farthest_to_right x, y
     
-    x_left.upto(x_right).collect do |pos|
+    word = x_left.upto(x_right).collect do |pos|
       @board[[pos, y]].letter
     end.join
+    
+    return word if @dictionary.has_key? word
+    false
   end
-  
+
   def find_letter_farthest_to_left x, y
     x.downto(0) do |x_pos|
       return (x_pos + 1) if @board[[x_pos, y]].nil?
@@ -119,5 +127,10 @@ class GameLayer < CCLayer
 
   def region_size
     (CCDirector.sharedDirector.winSize.width - 20) / 10
+  end
+
+  def dict_file
+    return 'test_words' if RUBYMOTION_ENV == 'test'
+    'words'      
   end
 end

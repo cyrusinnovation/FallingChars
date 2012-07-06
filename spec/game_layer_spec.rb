@@ -22,7 +22,7 @@ describe GameLayer do
     @game_layer.board[[1, 0]] = Letter.new('a')
     @game_layer.board[[2, 0]] = Letter.new('t')
 
-    @game_layer.check_for_words(2, 0).should == true
+    @game_layer.check_for_words(2, 0).should == 'cat'
     
   end
 

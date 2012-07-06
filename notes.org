@@ -2,3 +2,7 @@
 ** On tap release in grid player can drop letter
 ** Drag moves image
 ** Letters can form words
+*** Drop all above down
+*** remove word
+*** points
+*** check for smaller words
