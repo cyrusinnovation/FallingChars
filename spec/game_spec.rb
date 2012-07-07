@@ -7,15 +7,15 @@ describe "Game" do
   it "can drop a letter on tap release" do
     touch CGPoint.new(10, 10)
     release_touch CGPoint.new(10, 10)
-    game_layer.board[[0, 0]].should.not == nil
+    game_layer.board.board[[0, 0]].should.not == nil
   end
 
   it "can drop multiple letters" do
     first_letter = drop_letter 0
     second_letter = drop_letter 9
 
-    game_layer.board[[0, 0]].should == first_letter
-    game_layer.board[[9, 0]].should == second_letter
+    game_layer.board.board[[0, 0]].should == first_letter
+    game_layer.board.board[[9, 0]].should == second_letter
     first_letter.should.not == game_layer.current_letter
   end
 
@@ -23,8 +23,8 @@ describe "Game" do
     first_letter = drop_letter 0
     second_letter = drop_letter 0
 
-    game_layer.board[[0, 0]].should == first_letter
-    game_layer.board[[0, 1]].should == second_letter
+    game_layer.board.board[[0, 0]].should == first_letter
+    game_layer.board.board[[0, 1]].should == second_letter
   end
 
   it "can recognize and remove words" do
@@ -32,7 +32,7 @@ describe "Game" do
     drop_letter 1, 'a'
     drop_letter 2, 't'
 
-    game_layer.board[[0, 0]].should == nil
+    game_layer.board.board[[0, 0]].should == nil
   end
 
   it "drops letters above removed words" do
@@ -41,7 +41,7 @@ describe "Game" do
     drop_letter 1, 'a'
     drop_letter 2, 't'
 
-    game_layer.board[[0, 0]].should == dropped
+    game_layer.board.board[[0, 0]].should == dropped
   end
   
 

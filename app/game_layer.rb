@@ -20,7 +20,7 @@ class GameLayer < CCLayer
 
     create_new_letter random_letter
 
-    @board = Hash.new(nil)
+    @board = Board.new
     
     self.isTouchEnabled = true
     schedule 'update'
@@ -69,14 +69,17 @@ class GameLayer < CCLayer
   end
 
   def drop_letter x
-    first_unused_spot = get_first_unused_spot(x)
-    @board[[x, first_unused_spot]] = @current_letter
-    @board[[x, first_unused_spot]].move_to CGPoint.new(x_pos(x), first_unused_spot * region_size + 20)
-    CheckForWords.new(@board, x, first_unused_spot).check_for_words
+    y = get_first_unused_spot(x)
+    @board.board[[x, y]] = @current_letter
+    @current_letter.move_to CGPoint.new(x_pos(x), y * region_size + 20)
+
+    largest_possible_word = @board.find_largest_possible_word x, y
+    found_word = CheckForWords.check_for_words(largest_possible_word)
+    @board.remove_word(found_word, x, y) if found_word
   end
 
   def get_first_unused_spot x
-    9.times { |y| return y if @board[[x, y]].nil? }
+    9.times { |y| return y if @board.board[[x, y]].nil? }
   end
 
   def x_pos x
