@@ -31,13 +31,18 @@ class CheckForWords
 
     if CheckForWords.dictionary.has_key? word
       x_left.upto(x_right).each do |pos|
-        @board[[pos, @y]].sprite.removeFromParentAndCleanup(true)
-        @board[[pos, @y]].label.removeFromParentAndCleanup(true)
-        @board[[pos, @y]] = nil
+        @board[[pos, @y]].label.runAction(CCBlink.actionWithDuration(1, blinks: 5))
+        @board[[pos, @y]].sprite.runAction(CCSequence.actionsWithArray([CCBlink.actionWithDuration(1, blinks: 5), CCCallFuncO.actionWithTarget(self, selector:'remove:', object: pos)]))
       end
       return word
     end
     false
+  end
+
+  def remove pos
+    @board[[pos, @y]].sprite.removeFromParentAndCleanup(true)
+    @board[[pos, @y]].label.removeFromParentAndCleanup(true)
+    @board[[pos, @y]] = nil
   end
 
   def find_letter_farthest_to_left
