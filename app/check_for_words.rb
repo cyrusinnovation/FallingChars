@@ -22,21 +22,38 @@ class CheckForWords
   end
 
   def check_for_words
-    x_left = find_letter_farthest_to_left
-    x_right = find_letter_farthest_to_right
+    left = find_letter_farthest_to_left
+    right = find_letter_farthest_to_right
     
-    word = x_left.upto(x_right).collect do |pos|
-      @board[[pos, @y]].letter
-    end.join
-
-    if CheckForWords.dictionary.has_key? word
-      x_left.upto(x_right).each do |pos|
-        @board[[pos, @y]].label.runAction(CCBlink.actionWithDuration(1, blinks: 5))
-        @board[[pos, @y]].sprite.runAction(CCSequence.actionsWithArray([CCBlink.actionWithDuration(1, blinks: 5), CCCallFuncO.actionWithTarget(self, selector:'remove:', object: pos)]))
+    all_possible_words(left, right).each do |possible_word|
+      if word? possible_word
+        left.upto(right).each do |pos|
+          @board[[pos, @y]].label.runAction(CCBlink.actionWithDuration(1, blinks: 5))
+          @board[[pos, @y]].sprite.runAction(CCSequence.actionsWithArray([CCBlink.actionWithDuration(1, blinks: 5), CCCallFuncO.actionWithTarget(self, selector:'remove:', object: pos)]))
+          remove(pos) if RUBYMOTION_ENV == 'test'
+        end
+        return possible_word
       end
-      return word
     end
     false
+  end
+
+  def all_possible_words left, right
+    left.upto(right).collect do |adjusted_left|
+      right.downto(adjusted_left).collect do |adjusted_right|
+        possible_word adjusted_left, adjusted_right
+      end
+    end.flatten
+  end
+
+  def possible_word left, right
+    left.upto(right).collect do |pos|
+      @board[[pos, @y]].letter
+    end.join
+  end
+
+  def word? possible_word
+    CheckForWords.dictionary.has_key? possible_word
   end
 
   def remove pos
