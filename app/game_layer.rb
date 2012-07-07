@@ -58,12 +58,12 @@ class GameLayer < CCLayer
   end
 
   def touch_moved position
-    x = x_in_region position.x
-    @current_letter.position = CGPoint.new(x_pos(x), 400)
+    x = BoardToScreen.x_in_region position.x
+    @current_letter.position = CGPoint.new(BoardToScreen.x_pos(x), 400)
   end
 
   def touch_ended position
-    x = x_in_region position.x
+    x = BoardToScreen.x_in_region position.x
     drop_letter x
     create_new_letter random_letter
   end
@@ -71,7 +71,7 @@ class GameLayer < CCLayer
   def drop_letter x
     y = get_first_unused_spot(x)
     @board.board[[x, y]] = @current_letter
-    @current_letter.move_to CGPoint.new(x_pos(x), y * region_size + 20)
+    @current_letter.move_to BoardToScreen.point(x, y)
 
     largest_possible_word = @board.find_largest_possible_word x, y
     found_word = CheckForWords.check_for_words(largest_possible_word)
@@ -82,13 +82,9 @@ class GameLayer < CCLayer
     9.times { |y| return y if @board.board[[x, y]].nil? }
   end
 
-  def x_pos x
-    region_size * x + 20
-  end
-
   def create_new_letter letter
     @current_letter = Letter.new(letter)
-    @current_letter.position = CGPoint.new(x_pos(4), 400)
+    @current_letter.position = CGPoint.new(BoardToScreen.x_pos(4), 400)
     @batch_node.addChild @current_letter.sprite
     addChild(@current_letter.label)
   end
@@ -97,13 +93,5 @@ class GameLayer < CCLayer
     (Array.new(5, 'a') + Array.new(5, 'e') + Array.new(5, 'i') + Array.new(5, 'o') + Array.new(5, 'u') + ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']).sample
   end
 
-  def x_in_region x
-    region_num = (x / region_size).to_i
-    region_num = 9 if region_num > 9
-    region_num
-  end
 
-  def region_size
-    (CCDirector.sharedDirector.winSize.width - 20) / 10
-  end
 end

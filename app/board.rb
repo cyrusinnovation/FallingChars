@@ -7,7 +7,7 @@ class Board
 
   def find_word word, around_x, around_y
     largest_word = find_largest_possible_word around_x, around_y
-    left_pos = largest_word.index word
+    left_pos = largest_word.index(word) + find_position_farthest_to_left(around_x, around_y)
     right_pos = word.size + left_pos - 1
     
     left_pos.upto(right_pos).collect do |x|
@@ -32,7 +32,21 @@ class Board
     letter.sprite.removeFromParentAndCleanup(true)
     letter.label.removeFromParentAndCleanup(true)
 
-    @board[@board.key(letter)] = nil
+    pos = @board.key(letter)
+    @board[pos] = nil
+
+    drop_above pos
+  end
+
+  def drop_above pos
+    x = pos.first
+    y = pos.last
+    while !@board[[x, y + 1]].nil?
+      @board[[x, y]] = @board[[x, y + 1]]
+      @board[[x, y + 1]] = nil
+      @board[[x, y]].move_to BoardToScreen.point(x, y)
+      y += 1
+    end
   end
 
   def find_largest_possible_word x, y
