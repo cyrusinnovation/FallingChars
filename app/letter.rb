@@ -8,6 +8,7 @@ class Letter
     @sprite = CCSprite.spriteWithSpriteFrameName('circle.png')
 
     @label = CCLabelTTF.labelWithString(letter, fontName:"Marker Felt", fontSize:24)
+    @label.color = [230, 20, 20]
   end
 
   def position
