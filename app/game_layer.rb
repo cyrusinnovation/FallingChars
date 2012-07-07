@@ -15,6 +15,7 @@ class GameLayer < CCLayer
     @frame_tick = 0
 
     CheckForWords.load_dictionary
+    create_random_letters
 
     create_batch_node
 
@@ -90,8 +91,16 @@ class GameLayer < CCLayer
   end
 
   def random_letter
-    (Array.new(5, 'a') + Array.new(5, 'e') + Array.new(5, 'i') + Array.new(5, 'o') + Array.new(5, 'u') + ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']).sample
+    @random_letters.sample
   end
 
+  def create_random_letters
+    # http://en.wikipedia.org/wiki/Letter_frequency#Relative_frequencies_of_letters_in_the_English_language
+    @random_letters = Array.new(8, 'a') + Array.new(13, 'e') + Array.new(7, 'i') + Array.new(7, 'o') + Array.new(3, 'u') + 
+      Array.new(2, 'b') +  Array.new(3, 'c') +  Array.new(4, 'd') +  Array.new(2, 'f') +  Array.new(2, 'g') +  Array.new(6, 'h') +  Array.new(1, 'j') +  Array.new(1, 'k') +  
+      Array.new(4, 'l') +  Array.new(3, 'm') +  Array.new(3, 'n') +  Array.new(2, 'p') +  Array.new(1, 'q') +  Array.new(6, 'r') +  Array.new(6, 's') +  Array.new(9, 't') +  
+      Array.new(1, 'v') +  Array.new(2, 'w') +  Array.new(1, 'x') +  Array.new(2, 'y') +  Array.new(1, 'z')
+
+  end
 
 end
