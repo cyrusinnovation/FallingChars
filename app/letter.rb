@@ -19,4 +19,11 @@ class Letter
     @sprite.position = point
     @label.position = point
   end
+
+  def move_to point
+    move = CCMoveTo.actionWithDuration(0.7, position: point)
+    moveLabel = CCMoveTo.actionWithDuration(0.7, position: point)
+    sprite.runAction move
+    label.runAction moveLabel
+  end
 end

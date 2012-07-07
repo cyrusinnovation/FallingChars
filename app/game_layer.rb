@@ -29,7 +29,6 @@ class GameLayer < CCLayer
   end
 
   def update
-    
     @frame_tick += 1
     @frame_tick = 0 if @frame_tick == 1000000
   end
@@ -68,12 +67,7 @@ class GameLayer < CCLayer
   def drop_letter x
     first_unused_spot = get_first_unused_spot(x)
     @board[[x, first_unused_spot]] = @current_letter
-    
-    move = CCMoveTo.actionWithDuration(0.7, position: CGPoint.new(x_pos(x), first_unused_spot * region_size + 20))
-    move2 = CCMoveTo.actionWithDuration(0.7, position: CGPoint.new(x_pos(x), first_unused_spot * region_size + 20))
-    @current_letter.sprite.runAction move
-    @current_letter.label.runAction move2
-
+    @board[[x, first_unused_spot]].move_to CGPoint.new(x_pos(x), first_unused_spot * region_size + 20)
     CheckForWords.new(@board, x, first_unused_spot).check_for_words
   end
 
