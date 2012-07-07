@@ -16,9 +16,7 @@ class GameLayer < CCLayer
 
     CheckForWords.load_dictionary
 
-    CCSpriteFrameCache.sharedSpriteFrameCache.addSpriteFramesWithFile("game_sprites.plist")
-    @batch_node = CCSpriteBatchNode.batchNodeWithFile("game_sprites.png")
-    addChild(@batch_node)
+    create_batch_node
 
     create_new_letter random_letter
 
@@ -27,6 +25,12 @@ class GameLayer < CCLayer
     self.isTouchEnabled = true
     schedule 'update'
   end
+  def create_batch_node
+    CCSpriteFrameCache.sharedSpriteFrameCache.addSpriteFramesWithFile("game_sprites.plist")
+    @batch_node = CCSpriteBatchNode.batchNodeWithFile("game_sprites.png")
+    addChild(@batch_node)
+  end
+
 
   def update
     @frame_tick += 1
