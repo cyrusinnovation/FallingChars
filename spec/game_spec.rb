@@ -28,18 +28,28 @@ describe "Game" do
   end
 
   it "can recognize and remove words" do
-    drop_letter 9, 'c'
-    drop_letter 0, 'a'
-    drop_letter 1, 't'
-    drop_letter 2, 'z'
+    drop_letter 0, 'c'
+    drop_letter 1, 'a'
+    drop_letter 2, 't'
 
     game_layer.board[[0, 0]].should == nil
   end
 
+  it "drops letters above removed words" do
+    drop_letter 0, 'c'
+    dropped = drop_letter 0, 'm'
+    drop_letter 1, 'a'
+    drop_letter 2, 't'
+
+    game_layer.board[[0, 0]].should == dropped
+  end
+  
+
   def drop_letter x, new_letter='a'
     letter = game_layer.current_letter
+    letter.letter = new_letter
     game_layer.drop_letter x
-    game_layer.create_new_letter new_letter
+    game_layer.create_new_letter 'a'
     letter
   end
 
