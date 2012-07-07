@@ -6,4 +6,5 @@
 *** DONE remove word
 **** Animation
 *** points
-*** check for smaller words
+*** DONE check for smaller words
+*** make top to bottom words work
