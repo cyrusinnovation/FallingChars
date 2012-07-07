@@ -1,8 +1,11 @@
 class CheckForWords
-  
 
   def self.dictionary
     return @dictionary if @dictionary
+    load_dictionary
+  end
+
+  def self.load_dictionary
     @dictionary = {}
     File.new("#{NSBundle.mainBundle.resourcePath}/#{dict_file}").each do |word|
       @dictionary[word.chomp] = true

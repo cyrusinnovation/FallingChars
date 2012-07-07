@@ -14,7 +14,7 @@ class GameLayer < CCLayer
     super
     @frame_tick = 0
 
-    CheckForWords.dictionary
+    CheckForWords.load_dictionary
 
     CCSpriteFrameCache.sharedSpriteFrameCache.addSpriteFramesWithFile("game_sprites.plist")
     @batch_node = CCSpriteBatchNode.batchNodeWithFile("game_sprites.png")
