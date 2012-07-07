@@ -2,7 +2,7 @@
 ** On tap release in grid player can drop letter
 ** Drag moves image
 ** Letters can form words
-*** Drop all above down
+*** DONE Drop all above down
 *** DONE remove word
 **** Animation
 *** points
