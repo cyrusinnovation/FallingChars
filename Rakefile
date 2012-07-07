@@ -5,7 +5,7 @@ require 'bubble-wrap'
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
   app.name = 'Falling Chars'
-  app.provisioning_profile = '/Users/jacobodonnell/Library/MobileDevice/Provisioning Profiles/7CD5AEC7-711F-4B7B-9A3A-018967765BC2.mobileprovision'
+  app.provisioning_profile = '/Users/jacobodonnell/Library/MobileDevice/Provisioning Profiles/7CD5AEC7-711F-4B7B-9A3A-018967765BC2.mobileprovision' if ENV['USER'] == 'jacobodonnell'
 
   app.vendor_project( "vendor/cocos2d-iphone", :xcode,
     :xcodeproj => "cocos2d-ios.xcodeproj", :target => "cocos2d", :products => ["libcocos2d.a"],
