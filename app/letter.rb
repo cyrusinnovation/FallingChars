@@ -16,6 +16,6 @@ class Letter
 
   def position= point
     @sprite.position = point
-    @label.position = CGPoint.new(@sprite.position.x, @sprite.position.y)
+    @label.position = point
   end
 end

@@ -14,10 +14,7 @@ class GameLayer < CCLayer
     super
     @frame_tick = 0
 
-    @dictionary = {}
-    File.new("#{NSBundle.mainBundle.resourcePath}/#{dict_file}").each do |word|
-      @dictionary[word.chomp] = true
-    end
+    CheckForWords.dictionary
 
     CCSpriteFrameCache.sharedSpriteFrameCache.addSpriteFramesWithFile("game_sprites.plist")
     @batch_node = CCSpriteBatchNode.batchNodeWithFile("game_sprites.png")
@@ -58,6 +55,8 @@ class GameLayer < CCLayer
   end
 
   def touch_moved position
+    x = x_in_region position.x
+    @current_letter.position = CGPoint.new(x_pos(x), 400)
   end
 
   def touch_ended position
@@ -69,42 +68,13 @@ class GameLayer < CCLayer
   def drop_letter x
     first_unused_spot = get_first_unused_spot(x)
     @board[[x, first_unused_spot]] = @current_letter
-    @current_letter.position = CGPoint.new(x_pos(x), first_unused_spot * region_size + 20)
-
-    check_for_words(x, first_unused_spot)
-  end
-
-  def check_for_words x, y
-    x_left = find_letter_farthest_to_left x, y
-    x_right = find_letter_farthest_to_right x, y
     
-    word = x_left.upto(x_right).collect do |pos|
-      @board[[pos, y]].letter
-    end.join
+    move = CCMoveTo.actionWithDuration(0.7, position: CGPoint.new(x_pos(x), first_unused_spot * region_size + 20))
+    move2 = CCMoveTo.actionWithDuration(0.7, position: CGPoint.new(x_pos(x), first_unused_spot * region_size + 20))
+    @current_letter.sprite.runAction move
+    @current_letter.label.runAction move2
 
-    if @dictionary.has_key? word
-      x_left.upto(x_right).each do |pos|
-        @board[[pos, y]].sprite.removeFromParentAndCleanup(true)
-        @board[[pos, y]].label.removeFromParentAndCleanup(true)
-        @board[[pos, y]] = nil
-      end
-      return word
-    end
-    false
-  end
-
-  def find_letter_farthest_to_left x, y
-    x.downto(0) do |x_pos|
-      return (x_pos + 1) if @board[[x_pos, y]].nil?
-      return 0 if x_pos == 0
-    end
-  end
-
-  def find_letter_farthest_to_right x, y
-    x.upto(9) do |x_pos|
-      return (x_pos - 1) if @board[[x_pos, y]].nil?
-      return 9 if x_pos == 9
-    end
+    CheckForWords.new(@board, x, first_unused_spot).check_for_words
   end
 
   def get_first_unused_spot x
@@ -134,10 +104,5 @@ class GameLayer < CCLayer
 
   def region_size
     (CCDirector.sharedDirector.winSize.width - 20) / 10
-  end
-
-  def dict_file
-    return 'test_words' if RUBYMOTION_ENV == 'test'
-    'words'      
   end
 end
