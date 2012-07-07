@@ -93,7 +93,7 @@ class GameLayer < CCLayer
   end
 
   def random_letter
-    ('a'..'z').to_a.sample
+    (Array.new(5, 'a') + Array.new(5, 'e') + Array.new(5, 'i') + Array.new(5, 'o') + Array.new(5, 'u') + ['b', 'c', 'd', 'f', 'g', 'h', 'j', 'k', 'l', 'm', 'n', 'p', 'q', 'r', 's', 't', 'v', 'w', 'x', 'y', 'z']).sample
   end
 
   def x_in_region x
