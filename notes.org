@@ -3,6 +3,7 @@
 ** Drag moves image
 ** Letters can form words
 *** Drop all above down
-*** remove word
+*** DONE remove word
+**** Animation
 *** points
 *** check for smaller words
