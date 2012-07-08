@@ -8,3 +8,12 @@
 *** points
 *** DONE check for smaller words
 *** make top to bottom words work
+*** chains
+*** game over
+*** diagonal words
+*** multiplayer
+**** take turns dropping
+*** shadowed drop position
+*** confirm word
+*** score
+*** cannot drop if full
