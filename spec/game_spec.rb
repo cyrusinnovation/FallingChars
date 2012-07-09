@@ -35,6 +35,14 @@ describe "Game" do
     game_layer.board.board[[0, 0]].should == nil
   end
 
+  it "can recognize and remove vertical words" do
+    drop_letter 0, 't'
+    drop_letter 0, 'a'
+    drop_letter 0, 'c'
+
+    game_layer.board.board[[0, 0]].should == nil
+  end
+
   it "drops letters above removed words" do
     drop_letter 0, 'c'
     dropped = drop_letter 0, 'm'
