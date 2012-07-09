@@ -14,14 +14,13 @@ class GameLayer < CCLayer
     super
     @frame_tick = 0
 
+    @board = Board.new
     CheckForWords.load_dictionary
     create_random_letters
 
     create_batch_node
 
     create_new_letter random_letter
-
-    @board = Board.new
     
     self.isTouchEnabled = true
     schedule 'update'
@@ -59,8 +58,8 @@ class GameLayer < CCLayer
   end
 
   def touch_moved position
-    x = BoardToScreen.x_in_region position.x
-    @current_letter.position = CGPoint.new(BoardToScreen.x_pos(x), 400)
+    x_region = BoardToScreen.x_in_region position.x
+    move_current_letter x_region
   end
 
   def touch_ended position
@@ -70,6 +69,9 @@ class GameLayer < CCLayer
   end
 
   def drop_letter x
+    @current_letter.shadowed_drop.removeFromParentAndCleanup(true)
+    @current_letter.shadowed_drop_label.removeFromParentAndCleanup(true)
+
     y = get_first_unused_spot(x)
     @board.board[[x, y]] = @current_letter
     @current_letter.move_to BoardToScreen.point(x, y)
@@ -85,9 +87,21 @@ class GameLayer < CCLayer
 
   def create_new_letter letter
     @current_letter = Letter.new(letter)
-    @current_letter.position = CGPoint.new(BoardToScreen.x_pos(4), 400)
+    
+    move_current_letter 4
+
     @batch_node.addChild @current_letter.sprite
     addChild(@current_letter.label)
+    addChild(@current_letter.shadowed_drop)
+    addChild(@current_letter.shadowed_drop_label)
+  end
+
+  def move_current_letter x_region
+    x = BoardToScreen.x_pos(x_region)
+    y_region = get_first_unused_spot(x_region)
+    y = BoardToScreen.y_pos(y_region)
+
+    @current_letter.set_position CGPoint.new(x, 400), CGPoint.new(x, y)
   end
 
   def random_letter

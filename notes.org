@@ -17,3 +17,4 @@
 *** confirm word
 *** score
 *** cannot drop if full
+*** should not create new drop item until the last move is finished
