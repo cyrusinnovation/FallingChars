@@ -14,7 +14,7 @@ class CheckForWords
 
   def self.dict_file
     return 'test_words' if RUBYMOTION_ENV == 'test'
-    'words'      
+    'dict'
   end
 
   def self.check_for_words largest_possible_word
